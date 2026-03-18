@@ -2,9 +2,25 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const isValidEmail = (email) => {
+  return /\S+@\S+\.\S+/.test(email);
+};
+
 const signup = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required" });
+    }
+
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -16,7 +32,7 @@ const signup = async (req, res) => {
     const user = new User({
       email,
       password: hashedPassword,
-      role: role || "user"
+      role: "user"
     });
 
     await user.save();
@@ -32,6 +48,14 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required" });
+    }
+
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -44,7 +68,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, role: user.role },
-      "supersecretkey",
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 

@@ -2,21 +2,23 @@
 
 ## Overview
 
-GeoSecure is a backend identity and access management (IAM) system designed to simulate a production-grade authentication and authorization service similar to those used by modern platforms like Mapbox.
+GeoSecure is a backend Identity and Access Management (IAM) platform built to simulate the core security patterns used in modern production APIs.
 
-The system provides secure user authentication, role-based access control, and protected API endpoints using industry-standard practices.
+The project includes secure user signup and login flows, JWT-based authentication, middleware-protected routes, role-based access control, and rate limiting for abuse prevention. It is designed as a hands-on backend case study focused on authentication, authorization, and API security.
 
 ---
 
 ## Features
 
-- User signup with secure password hashing (bcrypt)
+- User signup with bcrypt password hashing
 - User login with credential validation
 - JWT-based authentication
 - Middleware-protected API routes
 - Role-based access control (user vs admin)
 - Admin-only route enforcement
+- Rate limiting on authentication endpoints
 - MongoDB Atlas cloud database integration
+- Environment-based secret management
 
 ---
 
@@ -24,21 +26,23 @@ The system provides secure user authentication, role-based access control, and p
 
 - Node.js
 - Express.js
-- MongoDB (Atlas)
+- MongoDB Atlas
 - Mongoose
 - bcryptjs
 - jsonwebtoken
+- express-rate-limit
+- dotenv
 
 ---
 
 ## Architecture
 
-The system follows a modular backend architecture:
+The project follows a modular backend architecture:
 
-- **Models** → define data structure (User)
-- **Controllers** → handle business logic (auth)
+- **Models** → define database structure
+- **Controllers** → handle auth business logic
 - **Routes** → define API endpoints
-- **Middleware** → handle authentication & authorization
+- **Middleware** → enforce authentication, authorization, and rate limiting
 
 ---
 
@@ -51,54 +55,57 @@ The system follows a modular backend architecture:
 
 ### Protected Routes
 
-- `GET /api/protected/dashboard` → requires authentication
-- `GET /api/protected/admin` → requires admin role
+- `GET /api/protected/dashboard` → authenticated users only
+- `GET /api/protected/admin` → admin users only
 
 ---
 
 ## Security Design
 
-- Passwords are hashed using bcrypt before storage
-- JWT tokens are issued upon successful login
-- Tokens are validated on protected routes
-- Role-based middleware enforces access control
-- Unauthorized and invalid requests are properly handled
+- Passwords are hashed with bcrypt before storage
+- JWT tokens are signed using an environment-based secret
+- Protected routes require valid bearer tokens
+- Admin routes enforce role-based access control
+- Rate limiting reduces brute-force and abuse risk
+- Signup does not allow privilege escalation through client-supplied roles
 
 ---
 
 ## Example Flow
 
-1. User signs up with email and password
-2. Password is hashed and stored securely
-3. User logs in and receives a JWT token
-4. Token is sent in request headers for protected routes
-5. Middleware validates token and extracts user data
-6. Access is granted or denied based on role
+1. A user signs up with an email and password
+2. The password is hashed before being stored
+3. The user logs in and receives a JWT token
+4. The token is sent in the Authorization header
+5. Middleware validates the token and extracts user identity
+6. Access is granted or denied based on route protection and role
 
 ---
 
 ## Learning Outcome
 
-This project demonstrates core backend engineering concepts:
+This project demonstrates practical backend engineering concepts:
 
-- Authentication vs Authorization
-- Secure credential handling
-- Token-based session management
-- Middleware-driven architecture
+- Authentication vs authorization
+- Secure password storage
+- JWT-based session patterns
+- Middleware-driven route protection
 - Role-based access control (RBAC)
+- Basic API abuse prevention with rate limiting
 
 ---
 
 ## Future Improvements
 
-- Refresh tokens & session management
-- API key system for external developers
-- Rate limiting and abuse prevention
-- Logging and monitoring
-- Deployment to cloud (AWS / Docker)
+- Refresh tokens
+- Password reset flow
+- Automated testing
+- Centralized error handling
+- API documentation with Swagger
+- Cloud deployment
 
 ---
 
 ## Author
 
-Built as a hands-on backend engineering case study focused on real-world IAM system design.
+Built as a backend security and IAM case study to demonstrate real-world authentication and authorization design patterns.
