@@ -2,9 +2,9 @@
 
 ## Overview
 
-GeoSecure is a backend Identity and Access Management (IAM) platform built to simulate the core security patterns used in modern production APIs.
+GeoSecure is a backend Identity and Access Management (IAM) platform built to simulate real-world authentication and authorization patterns used in production APIs.
 
-The project includes secure user signup and login flows, JWT-based authentication, middleware-protected routes, role-based access control, and rate limiting for abuse prevention. It is designed as a hands-on backend case study focused on authentication, authorization, and API security.
+The project includes secure signup and login flows, bcrypt password hashing, JWT-based authentication, middleware-protected routes, role-based access control, rate limiting for abuse prevention, environment-based secret management, and Swagger API documentation.
 
 ---
 
@@ -19,6 +19,8 @@ The project includes secure user signup and login flows, JWT-based authenticatio
 - Rate limiting on authentication endpoints
 - MongoDB Atlas cloud database integration
 - Environment-based secret management
+- Swagger documentation at `/api-docs`
+- Centralized 404 and error handling
 
 ---
 
@@ -32,6 +34,8 @@ The project includes secure user signup and login flows, JWT-based authenticatio
 - jsonwebtoken
 - express-rate-limit
 - dotenv
+- swagger-ui-express
+- swagger-jsdoc
 
 ---
 
@@ -57,6 +61,10 @@ The project follows a modular backend architecture:
 
 - `GET /api/protected/dashboard` → authenticated users only
 - `GET /api/protected/admin` → admin users only
+
+### Documentation
+
+- `GET /api-docs` → Swagger UI
 
 ---
 
@@ -92,16 +100,17 @@ This project demonstrates practical backend engineering concepts:
 - Middleware-driven route protection
 - Role-based access control (RBAC)
 - Basic API abuse prevention with rate limiting
+- Centralized error handling
+- API documentation practices
 
 ---
 
 ## Future Improvements
 
+- Automated tests
 - Refresh tokens
 - Password reset flow
-- Automated testing
-- Centralized error handling
-- API documentation with Swagger
+- Request validation middleware
 - Cloud deployment
 
 ---
